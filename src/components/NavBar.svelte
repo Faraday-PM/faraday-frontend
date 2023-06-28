@@ -1,6 +1,6 @@
-<nav class="">
+<nav>
   <div class="btm-nav relative">
-    <button>
+    <button class="active">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -23,7 +23,7 @@
 
       Vault
     </button>
-    <button class="active">
+    <button>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"

@@ -56,7 +56,7 @@
 
 <div>
   <div class="font-mono">
-    <div class="h-[600px] w-[375px]">
+    <div class="h-[536px] w-[375px]">
       <SearchBar />
       <main class="h-[78%] overflow-y-scroll">
         <ul class="pl-3">
@@ -65,7 +65,6 @@
           {/each}
         </ul>
       </main>
-      <NavBar />
     </div>
   </div>
 </div>
