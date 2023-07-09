@@ -14,6 +14,7 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
 		"@types/node": "^20.3.2",
+		"@types/zxcvbn": "^4.4.1",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
 		"autoprefixer": "^10.4.14",
@@ -31,6 +32,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@sveu/browser": "^0.20.0"
+		"@macfja/svelte-persistent-store": "^2.3.1",
+		"@sveu/browser": "^0.20.0",
+		"buffer": "^6.0.3",
+		"vite-plugin-require": "^1.1.10",
+		"zxcvbn": "^4.4.2"
 	}
 }

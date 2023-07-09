@@ -1,6 +1,25 @@
+<script lang="ts">
+  import { route } from "../stores";
+  const routes = ["/", "/generator", "/account"];
+  let selected: number = 0;
+
+  $: {
+    route.set(routes[selected]);
+  }
+  route.subscribe((value) => {
+    selected = routes.indexOf(value);
+  });
+</script>
+
 <nav>
   <div class="btm-nav relative">
-    <button class="active">
+    <a
+      class={selected === 0 ? "active" : ""}
+      href="/"
+      on:click={() => {
+        selected = 0;
+      }}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -22,8 +41,14 @@
       </svg>
 
       Vault
-    </button>
-    <button>
+    </a>
+    <a
+      class={selected === 1 ? "active" : ""}
+      href="/generator"
+      on:click={() => {
+        selected = 1;
+      }}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
@@ -38,8 +63,14 @@
       </svg>
 
       Generator
-    </button>
-    <button>
+    </a>
+    <a
+      class={selected === 2 ? "active" : ""}
+      href="/account"
+      on:click={() => {
+        selected = 2;
+      }}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -54,6 +85,6 @@
       </svg>
 
       Account
-    </button>
+    </a>
   </div>
 </nav>

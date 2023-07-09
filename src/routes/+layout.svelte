@@ -3,7 +3,7 @@
   import NavBar from "../components/NavBar.svelte";
 </script>
 
-<div class="h-[600px] w-[375px]">
+<div class="h-[600px] w-[375px] font-mono">
   <slot />
   <NavBar />
 </div>
