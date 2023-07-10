@@ -1,4 +1,6 @@
 import { serverIP, credentials, vault } from "../stores";
+import { Buffer } from "buffer";
+
 // idk if it will auto update value
 let creds: any = {};
 

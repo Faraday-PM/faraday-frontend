@@ -3,29 +3,7 @@ import { writable } from "svelte/store";
 
 export const route = persist(writable(""), createLocalStorage(), "route");
 
-export const vault: any = persist(
-  writable({
-    vault: [
-      {
-        url: "https://google.com",
-        username: "admin",
-        password: "password",
-      },
-      {
-        url: "https://stackoverflow.com",
-        username: "stackoverflowusername",
-        password: "password",
-      },
-      {
-        url: "https://gnu.org",
-        username: "gnuusername",
-        password: "password",
-      },
-    ],
-  }),
-  createLocalStorage(),
-  "vault"
-);
+export const vault: any = persist(writable({}), createLocalStorage(), "vault");
 
 /* 
 vault = {
