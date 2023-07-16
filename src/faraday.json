@@ -1,3 +1,10 @@
 {
-  "version": "beta"
+  "name": "Faraday Password Manager",
+  "version": "0.0.1",
+  "release": "Alpha",
+  "built": "Fri Jun 30 2023 13:25:34 GMT+0100 (GMT+01:00)",
+  "license": "MIT",
+  "license_link": "https://mit-license.org/",
+  "author": "Emilio Mendoza",
+  "source_code": "https://github.com/Faraday-PM"
 }

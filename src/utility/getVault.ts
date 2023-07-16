@@ -1,30 +1,31 @@
-import { serverIP, credentials, vault } from "../stores";
+import { serverIP, credentials } from "../stores";
 import { Buffer } from "buffer";
+import updateVault from "./updateVault";
+import { encrypt, decrypt } from "./encryption";
+import deriveVaultKey from "./deriveVaultKey";
 
-// idk if it will auto update value
-let creds: any = {};
-
-credentials.subscribe((c) => {
-  creds = c;
+let ip = "";
+serverIP.subscribe((val) => {
+  ip = val;
 });
 
-let ip: string;
-
-serverIP.subscribe((i) => (ip = i));
-
-export const base64ToJson = (
-  base64String: string
-): { [index: string]: any } => {
-  const json = Buffer.from(base64String, "base64").toString();
-  return JSON.parse(json);
+type credentialType = {
+  username: string;
+  password: string;
+  decrypted: string;
 };
 
-export const jsonToBase64 = (object: object): string => {
-  const json = JSON.stringify(object);
-  return Buffer.from(json).toString("base64");
+let creds: credentialType = {
+  username: "",
+  password: "",
+  decrypted: "",
 };
+credentials.subscribe((val) => {
+  creds = val;
+});
 
 const getVault = async () => {
+  let resVault = "";
   const res = await fetch(`${ip}/auth`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -32,11 +33,22 @@ const getVault = async () => {
       username: creds.username,
       password: creds.password,
     }),
-  });
-  const json = await res.json();
-  console.log(json);
-  vault.set(base64ToJson(json.vault));
-  return json;
+  })
+    .then((r) => r.json())
+    .then((val) => {
+      resVault = val.vault;
+    });
+  const decrypted = decrypt(
+    resVault,
+    await deriveVaultKey(creds.decrypted, creds.password)
+  );
+  return resVault;
 };
 
-export default getVault;
+const runGetVault = () => {
+  getVault().then((val) => {
+    updateVault(val);
+  });
+};
+
+export default runGetVault;

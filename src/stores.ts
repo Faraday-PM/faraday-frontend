@@ -36,8 +36,9 @@ vault = {
 
 export const credentials = persist(
   writable({
-    username: "tester",
+    username: "emilio",
     password: "hashedpassw",
+    decrypted: "hashedpassw",
   }),
   createLocalStorage(),
   "credentials"

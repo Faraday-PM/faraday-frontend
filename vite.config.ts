@@ -7,6 +7,10 @@ export default defineConfig({
     alias: {
       Buffer: "vite-compatible-readable-buffer",
       navigator: "vite-compatible-readable-navigator",
+      process: "process/browser",
+      stream: "stream-browserify",
+      zlib: "browserify-zlib",
+      util: 'util'
     },
   },
 });

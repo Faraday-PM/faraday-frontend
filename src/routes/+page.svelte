@@ -1,32 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import NavBar from "../components/NavBar.svelte";
   import SearchBar from "../components/SearchBar.svelte";
   import ListItem from "../components/ListItem.svelte";
-  import { vault, serverIP, credentials } from "../stores";
-  import updateVault from "../utility/updateVault";
+  import { vault } from "../stores";
+  import runGetVault from "../utility/getVault";
 
-  const get = async () => {
-    let v = "";
-    const res = await fetch(`${$serverIP}/auth`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: $credentials.username,
-        password: $credentials.password,
-      }),
-    })
-      .then((r) => r.json())
-      .then((val) => {
-        v = val.vault;
-      });
-    return v;
-  };
-
-  const response = get().then((val) => {
-    updateVault(val);
+  onMount(() => {
+    if ($vault.vault == undefined) runGetVault();
   });
-  console.log($vault.vault);
 </script>
 
 <div>

@@ -12,7 +12,6 @@
 
   const getfavicon = async () => {
     // my bad for the messy code
-    console.log("Waiting for api")
     const res = await fetch(`${$serverIP}/favicon?url=${url}`);
 
     await res.json().then((result) => {

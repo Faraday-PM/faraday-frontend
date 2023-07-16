@@ -34,7 +34,15 @@
 	"dependencies": {
 		"@macfja/svelte-persistent-store": "^2.3.1",
 		"@sveu/browser": "^0.20.0",
+		"@types/crypto-js": "^4.1.1",
+		"browserify-zlib": "^0.2.0",
 		"buffer": "^6.0.3",
+		"crypto-browserify": "^3.12.0",
+		"crypto-js": "^4.1.1",
+		"events": "^3.3.0",
+		"process": "^0.11.10",
+		"stream-browserify": "^3.0.0",
+		"util": "^0.12.5",
 		"vite-plugin-require": "^1.1.10",
 		"zxcvbn": "^4.4.2"
 	}
