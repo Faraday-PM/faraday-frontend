@@ -1,5 +1,6 @@
 <script lang="ts">
   import logout from "../../utility/logout";
+  import run from "../../testing/testdata";
 </script>
 
 <div class="h-[536px] w-[375px]">
@@ -84,6 +85,7 @@
         </svg>
         <p class="ml-2">Logout</p>
       </button>
+      <button on:click={run}> press me </button>
     </div>
   </div>
 </div>
