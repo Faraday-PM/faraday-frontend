@@ -1,6 +1,6 @@
 <script lang="ts">
   import { vault } from "../../../stores";
-  import runGetVault from "../../../utility/getVault";
+  import { updateVault } from "../../../utility/vaultHandler";
 </script>
 
 <div class="h-[536px] w-[375px]">
@@ -67,7 +67,7 @@
       <button
         class="ml-3"
         on:click={() => {
-          runGetVault();
+          updateVault();
         }}>Refresh Vault</button
       >
     </div>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import logout from "../../utility/logout";
-  import run from "../../testing/testdata";
+  import { run } from "../../utility/vaultHandler";
 </script>
 
 <div class="h-[536px] w-[375px]">

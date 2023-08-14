@@ -1,20 +1,16 @@
-import pbkdf2 from "crypto-js/pbkdf2";
-import CryptoJS from "crypto-js";
+import * as forge from "node-forge";
 
-// takes soooo long to run, so we should run it in a seperate thread
 const derivekey = (username: string, password: string) => {
-  //console.log("running hashing");
-  //console.time();
   // salt doesnt matter for this application
   // hopefully
-  const key = pbkdf2(username + password, "salt", {
-    keySize: 8,
-    iterations: 600000,
-    hasher: CryptoJS.algo.SHA256,
-  }).toString(CryptoJS.enc.Hex);
-  //console.log(key);
-  //console.timeEnd();
-  return key;
+  const key = forge.pkcs5.pbkdf2(
+    username + password,
+    "salt",
+    600_000,
+    32,
+    "sha256"
+  );
+  return forge.util.bytesToHex(key);
 };
 
 self.onmessage = (event) => {

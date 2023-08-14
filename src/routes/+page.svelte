@@ -3,10 +3,10 @@
   import SearchBar from "../components/SearchBar.svelte";
   import ListItem from "../components/ListItem.svelte";
   import { vault } from "../stores";
-  import runGetVault from "../utility/getVault";
+  import { updateVault } from "../utility/vaultHandler";
 
   onMount(() => {
-    if ($vault.vault == undefined) runGetVault();
+    if ($vault.vault == undefined) updateVault();
   });
 </script>
 

@@ -1,14 +1,25 @@
 import * as forge from "node-forge";
-import { vault } from "../stores";
+import { vault, credentials, serverIP } from "../stores";
 
-const url = "http://192.168.2.198:8000";
 const salt = "salt";
-const password = forge.pkcs5.pbkdf2("password123", salt, 600_000, 32, "sha256");
 
-const key = "This is a key123";
+// All dynamically set
+let url = "";
+serverIP.subscribe((value) => {
+  url = value;
+});
+
+let password = "";
+let key = "";
+credentials.subscribe((value) => {
+  password = value.password;
+  key = password;
+});
+
 let message = "";
 let iv = ""; // "This is an IV456";
 
+// Gonna make it change the vault store
 async function getVault() {
   const body = {
     username: "testing123",
@@ -27,6 +38,15 @@ async function getVault() {
   console.log(json);
 }
 
+export async function updateVault() {
+  await getiv();
+  await getVault();
+
+  const decrypted = JSON.parse(decrypt(message).replaceAll("'", '"'));
+
+  vault.set(decrypted);
+}
+
 async function getiv() {
   const body = {
     username: "testing123",
@@ -43,10 +63,8 @@ async function getiv() {
   console.log(json);
   iv = forge.util.hexToBytes(json.iv);
 }
-getiv();
-getVault();
 
-function encrypt(plaintext: string) {
+export function encrypt(plaintext: string) {
   const cipher = forge.cipher.createCipher("AES-CBC", key);
   cipher.start({ iv: iv });
   cipher.update(forge.util.createBuffer(plaintext));
@@ -54,7 +72,7 @@ function encrypt(plaintext: string) {
   return cipher;
 }
 
-function decrypt(ciphertext: string) {
+export function decrypt(ciphertext: string) {
   const unhex = forge.util.hexToBytes(ciphertext);
   const decipher = forge.cipher.createDecipher("AES-CBC", password);
   decipher.start({
@@ -65,52 +83,15 @@ function decrypt(ciphertext: string) {
   decipher.finish();
   return decipher.output.data;
 }
-export default function run() {
+
+export function run() {
+  // to future me, I at least made things in seperate functions
+  getiv();
+  getVault();
   // Same quirk in JSON parsing standard
   const decrypted = decrypt(message).replaceAll("'", '"');
-
+  //console.log(forge.util.bytesToHex(password));
   console.log(decrypted);
   console.log(JSON.parse(decrypted));
   return;
 }
-
-const v = {
-  vault: [
-    {
-      url: "https://google.com",
-      username: "richardjackson@yahoo.com",
-      password: "!5bAcX&VuK",
-    },
-    {
-      url: "https://youtube.com",
-      username: "iwilson@hotmail.com",
-      password: "+4CrUi5%*t",
-    },
-    {
-      url: "https://facebook.com",
-      username: "hmcgee@hotmail.com",
-      password: "Y*kp9XKVCd",
-    },
-    {
-      url: "https://instagram.com",
-      username: "isantiago@yahoo.com",
-      password: "h%an0YveZ#",
-    },
-    {
-      url: "https://twitter.com",
-      username: "brian68@gmail.com",
-      password: "@qO@LwZ(M2",
-    },
-  ],
-};
-
-// 68656C6C6F20776F726C64
-
-// 68656c6c6f20776f726c640505050505
-
-/* 
-
-163372d851751cc93711de77322f2f8c10688de9ee66878327c363427d709766
-c56901b594261452a36c64417b8867198eef4bfc53f56e5d7bb3c7f2a52df6ea
-
-*/
