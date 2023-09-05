@@ -1,6 +1,7 @@
 <script lang="ts">
   import { serverIP, vault } from "./../stores";
   import Modal from "./Modal.svelte";
+  import { saveVault } from "../utility/vaultHandler";
 
   let showModal = false;
 
@@ -59,11 +60,10 @@
       });
 
       vault.set(v);
-      console.log("added to vault");
+      saveVault(v);
     } catch (e) {
       console.log("Couldn't add to vault");
       console.log(typeof $vault.vault);
-      console.log(e);
       // Couldn't add to vault
       return;
     }
@@ -90,9 +90,16 @@
       type="text"
       placeholder="Search Vault"
       class="input-bordered input w-full max-w-xs pl-10"
+      disabled
     />
   </div>
-  <div class="pl-2 pr-2 mt-2">
+  <button
+    class="pl-2 pr-2 mt-2"
+    on:click={() => {
+      showModal = true;
+      setupAdd();
+    }}
+  >
     <div class="relative">
       <button class="btn btn-neutral btn-sm">
         <svg
@@ -109,14 +116,6 @@
         </svg>
       </button>
     </div>
-  </div>
-  <button
-    on:click={() => {
-      showModal = true;
-      setupAdd();
-    }}
-  >
-    show modal
   </button>
 
   <Modal bind:showModal updateVault={addToVault}>
