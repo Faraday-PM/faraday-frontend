@@ -7,7 +7,7 @@
 - [x] Password Generator
 - [x] Grab favicons
 - [ ] Autofill
-- [ ] AES encryption
+- [x] AES encryption
 - [x] Store server information
 - [x] Store client credentials
 
