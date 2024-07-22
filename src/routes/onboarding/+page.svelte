@@ -1,7 +1,7 @@
 <script lang="ts">
   import sleep from "../../utility/sleep";
   import { fade } from "svelte/transition";
-  import { redirect } from "@sveltejs/kit";
+  import { goto } from "$app/navigation";
 
   interface user {
     url: string;
@@ -105,7 +105,8 @@
       throw new ConnectionError("Couldn't find server");
     }
     if (allowed) {
-      redirect(300, "/onboarding/signup");
+      console.log("redirecting");
+      goto("/onboarding/signup");
     } else {
       throw new ConnectionError("Server refused new account");
     }
@@ -155,47 +156,6 @@
                 }
               }
             }}
-          />
-        </div>
-      </div>
-    {:else if scene == "onboard"}
-      <div transition:fade>
-        <h2 class="text-xl font-bold">Create Account</h2>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Username</span>
-            <input
-              type="text"
-              class="input input-bordered"
-              bind:value={userInfo.username}
-            />
-          </label>
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Password</span>
-            <input
-              type="password"
-              class="input input-bordered"
-              bind:value={userInfo.password}
-            />
-          </label>
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Confirm Password</span>
-            <input
-              type="password"
-              class="input input-bordered"
-              bind:value={userInfo.password}
-            />
-          </label>
-        </div>
-        <div class="form-control">
-          <input
-            type="button"
-            value="Create Account"
-            class="btn btn-primary w-full"
           />
         </div>
       </div>
