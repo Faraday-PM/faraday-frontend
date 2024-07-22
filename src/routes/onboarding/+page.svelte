@@ -1,16 +1,40 @@
 <script lang="ts">
   import sleep from "../../utility/sleep";
+  import { fade } from "svelte/transition";
+  import { redirect } from "@sveltejs/kit";
 
-  let check = true;
+  interface user {
+    url: string;
+    url2: string;
+    username: string;
+    password: string;
+  }
 
-  let introWords = ["Welcome to Faraday", "The self hosted password manager"];
-  let i = 0;
-  let j = 0;
-  let text = "";
-  let currentWord = "";
-  let isDeleting = false;
-  let speed = 150;
-  let done = true;
+  let userInfo: user = {
+    url: "http://127.0.0.1",
+    url2: "",
+    username: "",
+    password: "",
+  };
+
+  let serverInfo: ServerDetails = {
+    allowConns: false,
+    email: false,
+  };
+
+  let check: boolean = true;
+  // whiteboard masturbation??
+  let introWords: Array<string> = [
+    "Welcome to Faraday",
+    "The self hosted password manager",
+  ];
+  let i: number = 0;
+  let j: number = 0;
+  let text: string = "";
+  let currentWord: string = "";
+  let isDeleting: boolean = false;
+  let speed: number = 150;
+  let scene: string = "intro";
 
   let typeWriter = async () => {
     currentWord = introWords[i];
@@ -31,51 +55,151 @@
         if (text == introWords[1]) {
           await sleep(1000);
           text = "";
-          done = true;
+          scene = "server";
         }
         await sleep(1000);
         isDeleting = true;
       }
     }
-    if (!done) {
+    if (scene == "intro") {
       setTimeout(typeWriter, speed);
     }
   };
   typeWriter();
 
-  $: {
-    console.log(check);
+  let errorMessage: string = "";
+
+  async function checkAllowConns(): Promise<ServerDetails> {
+    let allow = false;
+    try {
+      const res = await fetch(`${userInfo.url}/details`);
+      console.log(res);
+      const data: ServerDetails = await res.json();
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // I just love type masturbation
+  class ConnectionError extends Error {
+    constructor(message: string) {
+      super(message);
+      this.name = "ConnectionError";
+    }
+  }
+
+  interface ServerDetails {
+    allowConns: boolean;
+    email: boolean;
+  }
+
+  async function connect() {
+    let allowed = false;
+    try {
+      const d = await checkAllowConns();
+      allowed = d.allowConns;
+      serverInfo = d;
+    } catch (e) {
+      console.log(e);
+      throw new ConnectionError("Couldn't find server");
+    }
+    if (allowed) {
+      redirect(300, "/onboarding/signup");
+    } else {
+      throw new ConnectionError("Server refused new account");
+    }
   }
 </script>
 
 <div class="h-[600px] w-[375px] font-mono">
   <div class="flex items-center justify-center h-screen flex-col">
-    {#if !done}
+    {#if scene == "intro"}
       <p
         class="max-w-[60%] text-center text-2xl pb-3 font-bold transition-opacity ease-in duration-700 opacity-100 hover:opacity-0"
       >
         {text}
       </p>
-    {:else}
-      <h2 class="text-xl font-bold">Server Details</h2>
-      <div class="form-control">
-        <label class="label cursor-pointer">
-          <input type="checkbox" class="checkbox" bind:checked={check} />
-          <span
-            ><input
-              disabled={check}
+    {:else if scene == "server"}
+      <div transition:fade>
+        <h2 class="text-xl font-bold">Server Details</h2>
+        <div class="form-control flex items-center">
+          <label class="label cursor-pointer">
+            <input
+              type="checkbox"
+              class="checkbox"
+              bind:checked={check}
+              on:change={() => {
+                [userInfo.url, userInfo.url2] = [userInfo.url2, userInfo.url];
+              }}
+            />
+            <span
+              ><input
+                disabled={check}
+                type="text"
+                bind:value={userInfo.url}
+                class="ml-5 input input-bordered w-full max-w-xs"
+              /></span
+            >
+          </label>
+          <input
+            type="button"
+            value="Connect"
+            class="btn btn-ghost focus:btn-primary w-1/2 mt-3"
+            on:click={() => {
+              try {
+                connect();
+              } catch (e) {
+                if (e instanceof Error) {
+                  errorMessage = e.message;
+                }
+              }
+            }}
+          />
+        </div>
+      </div>
+    {:else if scene == "onboard"}
+      <div transition:fade>
+        <h2 class="text-xl font-bold">Create Account</h2>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Username</span>
+            <input
               type="text"
-              placeholder="Type here"
-              class="ml-5 input w-full max-w-xs"
-            /></span
-          >
-        </label>
+              class="input input-bordered"
+              bind:value={userInfo.username}
+            />
+          </label>
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Password</span>
+            <input
+              type="password"
+              class="input input-bordered"
+              bind:value={userInfo.password}
+            />
+          </label>
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Confirm Password</span>
+            <input
+              type="password"
+              class="input input-bordered"
+              bind:value={userInfo.password}
+            />
+          </label>
+        </div>
+        <div class="form-control">
+          <input
+            type="button"
+            value="Create Account"
+            class="btn btn-primary w-full"
+          />
+        </div>
       </div>
     {/if}
-
-    <!--
-    <p class="text-sm px-4">Faraday is a platform that helps you to manage your passwords.</p>
-    -->
   </div>
 
   <!-- technical fields-->
