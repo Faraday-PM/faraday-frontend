@@ -5,7 +5,7 @@
   <div class="flex justify-center align-middle items-center h-full">
     <div class="flex-row justify-center items-center">
       <h2 class="font-bold text-xl">Create Account</h2>
-      <div class="form-control">
+      <div class="form-control mt-4">
         <label class="input input-bordered flex items-center gap-2 mb-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"

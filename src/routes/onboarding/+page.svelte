@@ -2,6 +2,7 @@
   import sleep from "../../utility/sleep";
   import { fade } from "svelte/transition";
   import { goto } from "$app/navigation";
+  import { serverIP, serverDetails } from "../../stores";
 
   interface user {
     url: string;
@@ -10,8 +11,16 @@
     password: string;
   }
 
+  $: {
+    serverIP.set(userInfo.url);
+  }
+
+  $: {
+    serverDetails.set(serverInfo);
+  }
+
   let userInfo: user = {
-    url: "http://127.0.0.1",
+    url: "http://127.0.0.1:8000",
     url2: "",
     username: "",
     password: "",
@@ -116,9 +125,7 @@
 <div class="h-[600px] w-[375px] font-mono">
   <div class="flex items-center justify-center h-screen flex-col">
     {#if scene == "intro"}
-      <p
-        class="max-w-[60%] text-center text-2xl pb-3 font-bold transition-opacity ease-in duration-700 opacity-100 hover:opacity-0"
-      >
+      <p class="max-w-[60%] text-center text-2xl pb-3 font-bold">
         {text}
       </p>
     {:else if scene == "server"}

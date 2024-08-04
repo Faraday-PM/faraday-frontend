@@ -38,6 +38,15 @@ vault = {
 "username": "tester",
 "password": "hashedpassw"
 */
+export const serverDetails = writable<ServerDetails>({
+  allowConns: false,
+  email: false,
+});
+
+interface ServerDetails {
+  allowConns: boolean;
+  email: boolean;
+}
 
 export const credentials = persist(
   writable({
