@@ -3,6 +3,8 @@
   import NavBar from "../components/NavBar.svelte";
   import { onNavigate } from "$app/navigation";
 
+  const showNavBar: boolean = true;
+
   onNavigate((navigation) => {
     if (!document.startViewTransition) return;
 
@@ -17,5 +19,7 @@
 
 <div class="h-[600px] w-[375px] font-mono">
   <slot />
-  <NavBar />
+  {#if showNavBar}
+    <NavBar />
+  {/if}
 </div>

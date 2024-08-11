@@ -168,27 +168,4 @@
       </div>
     {/if}
   </div>
-
-  <!-- technical fields-->
-  <!--
-    <div>
-    <div class="flex justify-between">
-      <input type="checkbox" checked={checked} class="checkbox" />
-      <input type="text" id="server" placeholder="Enter server address"/>
-    </div>
-    <div class="flex justify-between">
-      <label for="email">Email</label>
-      <input type="email" id="email" />
-    </div>
-    <div class="flex justify-between">
-      <label for="password">Password</label>
-      <input type="password" id="password" />
-    </div>
-    <div class="flex justify-between">
-      <label for="confirm-password">Confirm Password</label>
-      <input type="password" id="confirm-password" />
-    </div>
-  </div>
-  
-  -->
 </div>
