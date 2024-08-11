@@ -123,9 +123,9 @@
 </script>
 
 <div class="h-[600px] w-[375px] font-mono">
-  <div class="flex items-center justify-center h-screen flex-col">
+  <div class="flex items-center justify-center h-full flex-col">
     {#if scene == "intro"}
-      <p class="max-w-[60%] text-center text-2xl pb-3 font-bold">
+      <p class="w-full text-center text-2xl pb-3 font-bold">
         {text}
       </p>
     {:else if scene == "server"}
