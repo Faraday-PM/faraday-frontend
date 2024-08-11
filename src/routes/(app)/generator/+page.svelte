@@ -1,5 +1,5 @@
 <script lang="ts">
-  import GradePanel from "../../components/GradePanel.svelte";
+  import GradePanel from "../../../components/GradePanel.svelte";
   import { password, backgroundColour, borderColour } from "./stores";
 
   const getRndInteger = (min: number, max: number) => {

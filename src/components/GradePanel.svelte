@@ -4,7 +4,7 @@
     password,
     backgroundColour,
     borderColour,
-  } from "../routes/generator/stores";
+  } from "../routes/(app)/generator/stores";
   import zxcvbn from "zxcvbn";
 
   /*

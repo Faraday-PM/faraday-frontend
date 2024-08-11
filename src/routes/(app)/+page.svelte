@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import SearchBar from "../components/SearchBar.svelte";
-  import ListItem from "../components/ListItem.svelte";
-  import { vault } from "../stores";
-  import { updateVault } from "../utility/vaultHandler";
+  import SearchBar from "../../components/SearchBar.svelte";
+  import ListItem from "../../components/ListItem.svelte";
+  import { vault } from "../../stores";
+  import { updateVault } from "../../utility/vaultHandler";
 
   onMount(() => {
     if ($vault.vault == undefined) updateVault();
