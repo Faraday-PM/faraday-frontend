@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { serverDetails, serverIP } from "../../../stores";
+  import { credentials, serverDetails, serverIP } from "../../../stores";
+  import MyWorker from "../../../utility/hashpw?worker";
 
   let email: string = "";
   let username: string = "";
@@ -34,6 +35,39 @@
     } else {
       response = "An error occurred";
     }
+
+    if (res.status === 200) {
+      storeStuff();
+    }
+  }
+
+  import pbkdf2 from "crypto-js/pbkdf2";
+  // set stuff with stores
+  // TODO: change name of func
+  async function storeStuff() {
+    /*
+    const w = new MyWorker();
+    console.log("starting");
+    w.postMessage({ username: username, password: password });
+    w.onmessage = function (event) {
+      console.log("Setting credentials");
+      credentials.set({
+        username: username,
+        password: event.data,
+        decrypted: password,
+      });
+    }; */
+    const key = await pbkdf2(username + password, "salt", {
+      keySize: 8,
+      iterations: 600000,
+      hasher: CryptoJS.algo.SHA256,
+    }).toString(CryptoJS.enc.Hex);
+
+    credentials.set({
+      username: username,
+      password: key,
+      decrypted: password,
+    });
   }
 </script>
 
