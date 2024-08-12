@@ -1,11 +1,46 @@
 <script lang="ts">
-  import { serverDetails } from "../../../stores";
+  import { serverDetails, serverIP } from "../../../stores";
+
+  let email: string = "";
+  let username: string = "";
+  let password: string = "";
+  let confirmPassword: string = "";
+
+  let response: string = "";
+  async function signup() {
+    // check passwords match
+    if (password !== confirmPassword) {
+      response = "Passwords do not match";
+      return;
+    }
+
+    let res = await fetch(`${$serverIP}/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    });
+    const messages: Record<number, string> = {
+      200: "Account created successfully",
+      400: "Invalid email or password",
+      422: "Please fill in all fields",
+    };
+    if (res.status in messages) {
+      response = messages[res.status];
+    } else {
+      response = "An error occurred";
+    }
+  }
 </script>
 
 <div class="h-[600px] w-[375px] font-mono">
   <div class="flex justify-center align-middle items-center h-full">
     <div class="flex-row justify-center items-center">
-      <h2 class="font-bold text-xl">Create Account</h2>
+      <h2 class="font-bold te xt-xl">Create Account</h2>
       <div class="form-control mt-4">
         {#if $serverDetails.email}
           <label class="input input-bordered flex items-center gap-2 mb-2">
@@ -26,6 +61,7 @@
               type="text"
               class="grow focus:outline-none"
               placeholder="Email"
+              bind:value={email}
             />
           </label>
         {/if}
@@ -44,6 +80,7 @@
             type="text"
             class="grow focus:outline-none"
             placeholder="Username"
+            bind:value={username}
           />
         </label>
         <label class="input input-bordered flex items-center gap-2 mb-2">
@@ -63,6 +100,7 @@
             type="password"
             placeholder="Password"
             class="grow focus:outline-none"
+            bind:value={password}
           />
         </label>
         <label class="input input-bordered flex items-center gap-2 mb-2">
@@ -82,8 +120,16 @@
             type="password"
             placeholder="Confirm Password"
             class="grow focus:outline-none"
+            bind:value={confirmPassword}
           />
         </label>
+        <button
+          class="btn btn-primary w-full mt-4"
+          on:click={() => {
+            signup();
+          }}>Sign Up</button
+        >
+        <p class="font-mono text-red-600 font-bold pt-3">{response}</p>
       </div>
     </div>
   </div>
