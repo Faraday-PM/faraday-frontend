@@ -51,6 +51,7 @@ export const credentials = persist(
   writable({
     username: "",
     password: "",
+    vaultkey: "", // base64 encoded
   }),
   createLocalStorage(),
   "credentials"

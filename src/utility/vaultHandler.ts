@@ -1,8 +1,7 @@
-import * as forge from "node-forge";
 import { vault, credentials, serverIP } from "../stores";
 import { Buffer } from "buffer";
-
-const salt = "salt";
+import { encode } from "./stringencode";
+import { ArrayBufferToBase64, Base64ToArrayBuffer } from "./base64funcs";
 
 // All dynamically set
 // I hate doing it like this
@@ -14,13 +13,25 @@ serverIP.subscribe((value) => {
 
 let password = "";
 let username = "";
+let key: CryptoKey;
+
+async function getkey(a: ArrayBuffer) {
+  const k = await window.crypto.subtle.importKey("raw", a, "AES-GCM", true, [
+    "decrypt",
+    "encrypt",
+  ]);
+  // GLOBAL VARIABLE :)
+  key = k;
+}
+
 credentials.subscribe((value) => {
   password = value.password;
   username = value.username;
+  getkey(Base64ToArrayBuffer(value.vaultkey));
 });
 
 let message = "";
-let iv = ""; // "This is an IV456";
+let iv = ""; // "This is an IV456"
 
 // Gonna make it change the vault store
 async function getVault() {
@@ -83,7 +94,25 @@ export async function updateVault() {
   vault.set(decrypted);
 }
 
-async function getiv() {
+export function encrypt(plaintext: string): string {
+  let returnitem = "";
+  async function helper() {
+    const iv = Base64ToArrayBuffer(await getiv());
+
+    const cipher = await window.crypto.subtle.encrypt(
+      { name: "AES-GCM", iv: iv },
+      key,
+      encode(plaintext)
+    );
+    returnitem = ArrayBufferToBase64(cipher);
+  }
+  helper();
+  return returnitem;
+}
+
+// TODO: Convert this iv to a better one
+// TODO: Make iv return based on status, like a 200 means success and get iv, but anything else means don't
+async function getiv(): string {
   console.log(password);
   const body = {
     username: username,
@@ -99,17 +128,6 @@ async function getiv() {
   const json = await res.json();
   console.log(json);
   iv = forge.util.hexToBytes(json.iv);
-}
-
-export function encrypt(plaintext: string): string {
-  const cipher = forge.cipher.createCipher(
-    "AES-CBC",
-    forge.util.hexToBytes(password) // decipher and cipher need byte key, cause key len thats why hextobytes
-  );
-  cipher.start({ iv: iv });
-  cipher.update(forge.util.createBuffer(plaintext));
-  cipher.finish();
-  return cipher.output.data;
 }
 
 export function decrypt(ciphertext: string) {
