@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { credentials, serverDetails, serverIP } from "../../../stores";
+  import { goto } from "$app/navigation";
+  import {
+    credentials,
+    serverDetails,
+    serverIP,
+    onboarded,
+  } from "../../../stores";
   import * as sha256 from "fast-sha256";
   import { encode, decode } from "../../../utility/stringencode";
 
@@ -38,7 +44,9 @@
     }
 
     if (res.status === 200) {
-      storeStuff();
+      await storeStuff();
+      onboarded.set(true);
+      goto("/");
     }
   }
   // set stuff with stores
@@ -50,12 +58,14 @@
     const key = sha256.pbkdf2(plaintext, salt, 600000, 32);
 
     // convert key to string using Uint8Array
-    const ciphertext = decode(key);
+    const vkey = decode(key);
+
+    const passw = decode(sha256.pbkdf2(key, salt, 1000, 32));
 
     $credentials.username = username;
-    $credentials.password = password;
+    $credentials.password = passw;
     // TODO: Change this
-    $credentials.vaultkey = password;
+    $credentials.vaultkey = vkey;
   }
 </script>
 

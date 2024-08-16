@@ -1,8 +1,8 @@
 <script lang="ts">
   import NavBar from "../../components/NavBar.svelte";
-  import { onNavigate } from "$app/navigation";
+  import { onNavigate, goto } from "$app/navigation";
   import { onboarded } from "../../stores";
-  import { redirect } from "@sveltejs/kit";
+  import { onMount } from "svelte";
   const showNavBar: boolean = true;
 
   onNavigate((navigation) => {
@@ -16,9 +16,11 @@
     });
   });
 
-  if (!$onboarded) {
-    throw redirect(300, "/onboarding");
-  }
+  onMount(() => {
+    if (!$onboarded) {
+      goto("/onboarding");
+    }
+  });
 </script>
 
 <div class="h-[600px] w-[375px] font-mono">
