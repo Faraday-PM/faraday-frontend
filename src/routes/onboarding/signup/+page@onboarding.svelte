@@ -1,6 +1,8 @@
 <script lang="ts">
   import { credentials, serverDetails, serverIP } from "../../../stores";
-  import MyWorker from "../../../utility/hashpw?worker";
+  import * as sha256 from "fast-sha256";
+  import { Buffer } from "buffer";
+  import { encode, decode } from "../../../utility/stringencode";
 
   let email: string = "";
   let username: string = "";
@@ -40,32 +42,20 @@
       storeStuff();
     }
   }
-
-  import pbkdf2 from "crypto-js/pbkdf2";
   // set stuff with stores
   // TODO: change name of func
   async function storeStuff() {
-    /*
-    const w = new MyWorker();
-    console.log("starting");
-    w.postMessage({ username: username, password: password });
-    w.onmessage = function (event) {
-      console.log("Setting credentials");
-      credentials.set({
-        username: username,
-        password: event.data,
-        decrypted: password,
-      });
-    }; */
-    const key = await pbkdf2(username + password, "salt", {
-      keySize: 8,
-      iterations: 600000,
-      hasher: CryptoJS.algo.SHA256,
-    }).toString(CryptoJS.enc.Hex);
+    const plaintext = encode(username + password);
+    // salt
+    const salt = new Uint8Array([115, 97, 108, 116]);
+    const key = sha256.pbkdf2(plaintext, salt, 600000, 32);
+
+    // convert key to string using Uint8Array
+    const ciphertext = decode(key);
 
     credentials.set({
       username: username,
-      password: key,
+      password: ciphertext,
       decrypted: password,
     });
   }

@@ -1,6 +1,5 @@
 import { persist, createLocalStorage } from "@macfja/svelte-persistent-store";
 import { writable } from "svelte/store";
-import * as forge from "node-forge";
 
 export const route = persist(writable(""), createLocalStorage(), "route");
 

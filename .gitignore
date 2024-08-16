@@ -11,3 +11,4 @@ vite.config.ts.timestamp-*
 pk.txt
 /private-keys
 /private-key/*
+.VSCodeCounter
