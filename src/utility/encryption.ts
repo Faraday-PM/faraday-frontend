@@ -6,7 +6,7 @@ export const encrypt = (vault: object, key: string, iv: any): string => {
     // TODO: figure out what it does
     mode: mode.CFB,
     padding: pad.Pkcs7,
-    iv: iv
+    iv: iv,
   });
   return res.toString();
 };
@@ -17,16 +17,7 @@ export const decrypt = (vault: string, key: string, iv: any): object => {
     // TODO: figure out what it does
     mode: mode.CFB,
     padding: pad.Pkcs7,
-    iv: iv
+    iv: iv,
   });
   return JSON.parse(res.toString());
 };
-
-/*
-self.onmessage = (event) => {
-  const { vault, key } = event.data;
-  const encryptedVault = encrypt(vault, key);
-  self.postMessage(encryptedVault);
-  self.close();
-};
-*/

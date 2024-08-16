@@ -1,7 +1,6 @@
 <script lang="ts">
   import { credentials, serverDetails, serverIP } from "../../../stores";
   import * as sha256 from "fast-sha256";
-  import { Buffer } from "buffer";
   import { encode, decode } from "../../../utility/stringencode";
 
   let email: string = "";

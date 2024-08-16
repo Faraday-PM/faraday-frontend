@@ -27,13 +27,15 @@
     "svelte-check": "^3.4.3",
     "sveltekit-adapter-chrome-extension": "^2.0.0",
     "tailwindcss": "^3.3.2",
+    "ts-node": "^10.9.2",
     "tslib": "^2.4.1",
-    "typescript": "^5.0.0",
+    "typescript": "^5.5.4",
     "vite": "^4.3.6"
   },
   "type": "module",
   "dependencies": {
     "@macfja/svelte-persistent-store": "^2.3.1",
+    "@stablelib/aes": "^2.0.0",
     "@sveu/browser": "^0.20.0",
     "@types/bytebuffer": "^5.0.44",
     "@types/dom-view-transitions": "^1.0.5",
@@ -41,11 +43,11 @@
     "buffer": "^6.0.3",
     "bytebuffer": "^5.0.1",
     "events": "^3.3.0",
+    "fast-sha256": "^1.1.0",
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
-    "util": "^0.12.5",
-    "fast-sha256": "^1.1.0",
     "tweetnacl-util": "^0.15.0",
+    "util": "^0.12.5",
     "vite-plugin-require": "^1.1.10",
     "zxcvbn": "^4.4.2"
   }

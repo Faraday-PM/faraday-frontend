@@ -1,7 +1,7 @@
 <script lang="ts">
   import { credentials, serverIP } from "./../../../../stores";
   import MyWorker from "../base64funcs../../../utility/hashpw?worker";
-  // import derivekey from "../../../utility/hashpw";
+
   let ip = $serverIP;
   let username = $credentials.username;
   let password = "";
@@ -9,20 +9,6 @@
   $: {
     serverIP.set(ip);
   }
-
-  const disbatchWorker = () => {
-    const w = new MyWorker();
-    console.log("starting");
-    w.postMessage({ username: username, password: password });
-    w.onmessage = function (event) {
-      console.log(event.data);
-      credentials.set({
-        username: username,
-        password: event.data,
-        decrypted: password,
-      });
-    };
-  };
 </script>
 
 <div class="h-[536px] w-[375px]">
@@ -75,12 +61,7 @@
           bind:value={password}
           class="input input-bordered input-primary w-3/4 max-w-xs"
         />
-        <button
-          class="btn btn-primary"
-          on:click={() => {
-            disbatchWorker();
-          }}>Change</button
-        >
+        <button class="btn btn-primary">Change</button>
       </div>
     </div>
   </div>

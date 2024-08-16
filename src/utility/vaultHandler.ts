@@ -132,7 +132,7 @@ export function run() {
   // to future me, I at least made things in seperate functions
   getiv();
   getVault();
-  // Same quirk in JSON parsing standard
+  // Same quirk in JSON parsing standard ??? MAYBE
   const decrypted = decrypt(message).replaceAll("'", '"');
   //console.log(forge.util.bytesToHex(password));
   console.log(decrypted);
