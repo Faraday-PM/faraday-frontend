@@ -62,3 +62,11 @@ export const serverIP = persist(
   createLocalStorage(),
   "serverIP"
 );
+
+export const mount = writable(false);
+
+export const onboarded = persist(
+  writable(false),
+  createLocalStorage(),
+  "onboarded"
+);

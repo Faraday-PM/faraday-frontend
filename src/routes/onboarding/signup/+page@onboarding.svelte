@@ -52,10 +52,10 @@
     // convert key to string using Uint8Array
     const ciphertext = decode(key);
 
-    credentials.set({
-      username: username,
-      password: ciphertext,
-    });
+    $credentials.username = username;
+    $credentials.password = password;
+    // TODO: Change this
+    $credentials.vaultkey = password;
   }
 </script>
 

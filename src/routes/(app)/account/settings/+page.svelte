@@ -1,6 +1,5 @@
 <script lang="ts">
   import { credentials, serverIP } from "./../../../../stores";
-  import MyWorker from "../base64funcs../../../utility/hashpw?worker";
 
   let ip = $serverIP;
   let username = $credentials.username;

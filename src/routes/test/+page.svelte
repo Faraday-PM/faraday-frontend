@@ -25,7 +25,7 @@
         user generates random iv
         user sends iv to server
         
-        user uses pbkdf2 key to encrypt base64 encoded vault
+        user uses pbkdf2 key to encrypt vault
         user sends vault to server
 
     decrupt:
