@@ -49,10 +49,8 @@ interface ServerDetails {
 
 export const credentials = persist(
   writable({
-    username: "emilio",
-    password:
-      "c56901b594261452a36c64417b8867198eef4bfc53f56e5d7bb3c7f2a52df6ea", // hex encoded value of password123 with salt "salt"
-    decrypted: "password123",
+    username: "",
+    password: "",
   }),
   createLocalStorage(),
   "credentials"

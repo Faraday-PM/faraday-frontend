@@ -55,7 +55,6 @@
     credentials.set({
       username: username,
       password: ciphertext,
-      decrypted: password,
     });
   }
 </script>
