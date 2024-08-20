@@ -20,7 +20,7 @@
   }
 
   let userInfo: user = {
-    url: "https://faraday-backend.onrender.com/",
+    url: "https://faraday-backend.onrender.com",
     url2: "",
     username: "",
     password: "",

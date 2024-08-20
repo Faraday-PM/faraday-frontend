@@ -16,10 +16,13 @@ let username = "";
 let key: CryptoKey;
 
 async function getkey(a: ArrayBuffer) {
-  const k = await window.crypto.subtle.importKey("raw", a, "AES-GCM", true, [
-    "decrypt",
-    "encrypt",
-  ]);
+  const k = await window.crypto.subtle.importKey(
+    "raw",
+    encode(ArrayBufferToBase64(a)),
+    "PBKDF2",
+    false,
+    ["deriveBits", "deriveKey"]
+  );
   // GLOBAL VARIABLE :)
   key = k;
 }
@@ -97,9 +100,21 @@ export function encrypt(plaintext: string): string {
   async function helper() {
     const iv = Base64ToArrayBuffer(await getiv());
 
+    const k = await window.crypto.subtle.deriveKey(
+      {
+        name: "PBKDF2",
+        salt: encode("salt"),
+        iterations: 600000,
+        hash: "SHA-256",
+      },
+      key,
+      { name: "AES-GCM", length: 256 },
+      true,
+      ["encrypt", "decrypt"]
+    );
     const cipher = await window.crypto.subtle.encrypt(
       { name: "AES-GCM", iv: iv },
-      key,
+      k,
       encode(plaintext)
     );
     returnitem = ArrayBufferToBase64(cipher);
