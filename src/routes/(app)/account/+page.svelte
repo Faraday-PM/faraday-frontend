@@ -45,7 +45,6 @@
         <p class="ml-2">Advanced</p>
       </a>
       <a
-        href="/account/register"
         class="inline-flex p-3 hover:bg-gray-100 transition-all ease-in-out"
       >
         <svg
