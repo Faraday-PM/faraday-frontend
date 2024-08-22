@@ -5,6 +5,14 @@ import argparse
 from typing import TypedDict, Literal
 from datetime import datetime
 
+
+"""
+USAGE:
+Run command python build.py --version (version number)
+Any other args can be seen with -h flag.
+"""
+
+
 assert os.path.isfile("src/faraday.json")
 
 parser = argparse.ArgumentParser(description="Command line tool to assist in building Faraday's frontend")
