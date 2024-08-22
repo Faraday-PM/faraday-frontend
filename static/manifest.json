@@ -12,5 +12,11 @@
     "48": "logo192.png",
     "128": "logo192.png"
   },
-  "permissions": ["tabs", "scripting"]
+  "permissions": ["tabs", "scripting", "webNavigation"],
+  "content_scripts": [
+    {
+      "js": ["scripts/autofill.js"],
+      "matches": ["*://*/*"]
+    }
+  ]
 }
