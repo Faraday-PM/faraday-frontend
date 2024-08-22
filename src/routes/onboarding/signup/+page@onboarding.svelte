@@ -22,6 +22,15 @@
       return;
     }
 
+    const plaintext = encode(username + password);
+    // salt
+    const salt = new Uint8Array([115, 97, 108, 116]);
+    const key = sha256.pbkdf2(plaintext, salt, 600000, 32);
+
+    const vkey = decode(key);
+    // TODO: if pbkdf2 becomes too slow, use SubtleCrypto's version
+    const passw = decode(sha256.pbkdf2(key, salt, 1000, 32));
+
     let res = await fetch(`${$serverIP}/register`, {
       method: "POST",
       headers: {
@@ -29,7 +38,7 @@
       },
       body: JSON.stringify({
         username: username,
-        password: password,
+        password: passw,
       }),
     });
     const messages: Record<number, string> = {
@@ -44,13 +53,17 @@
     }
 
     if (res.status === 200) {
-      await storeStuff();
+      $credentials.username = username;
+      $credentials.password = passw;
+      // TODO: Change this
+      $credentials.vaultkey = vkey;
       onboarded.set(true);
       goto("/");
     }
   }
   // set stuff with stores
   // TODO: change name of func
+  // TODO: remove this
   async function storeStuff() {
     const plaintext = encode(username + password);
     // salt

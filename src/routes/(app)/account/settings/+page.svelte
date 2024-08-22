@@ -39,29 +39,5 @@
         class="input input-bordered input-primary w-3/4 max-w-xs"
       />
     </div>
-    <div class="divider w-full" />
-    <div class="m-3">
-      <h3 class="text-lg font-semibold">Credentials</h3>
-      <h4 class="text-xs text-gray-500 pb-2">
-        This is not the way to change your password
-      </h4>
-      <div>
-        <p>Username</p>
-        <input
-          type="text"
-          placeholder="Username"
-          bind:value={username}
-          class="input input-bordered input-primary w-3/4 max-w-xs"
-        />
-        <p>Password</p>
-        <input
-          type="text"
-          placeholder="Password"
-          bind:value={password}
-          class="input input-bordered input-primary w-3/4 max-w-xs"
-        />
-        <button class="btn btn-primary">Change</button>
-      </div>
-    </div>
   </div>
 </div>
