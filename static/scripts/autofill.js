@@ -1,14 +1,39 @@
-function containsPasswordField() {}
+function containsLogin() {
+  const cl = false;
 
-function getPwdInputs() {
-  let ary = [];
-  const inputs = document.getElementsByTagName("input");
+  const keywords = ["password", "email", "username"];
+
+  let inputs = document.getElementsByTagName("input");
   for (var i = 0; i < inputs.length; i++) {
-    if (inputs[i].type.toLowerCase() === "password") {
-      ary.push(inputs[i]);
+    let type = inputs[i].type.toLowerCase();
+    let autocomplete = inputs[i].autocomplete.toLowerCase();
+    if (keywords.includes(type) || keywords.includes(autocomplete)) {
+      return true;
     }
   }
-  return ary;
+
+  return cl;
 }
 
-console.log(getPwdInputs());
+const keywords = ["password", "email", "username"];
+const observer = new MutationObserver(function (mutations) {
+  mutations.forEach(function (mutation) {
+    if (!mutation.addedNodes) {
+      return;
+    }
+    for (let i = 0; i < mutation.addedNodes.length; i++) {
+      if (mutation.addedNodes[i].nodeName == "INPUT") {
+        let type = mutation.addedNodes[i].type.toLowerCase();
+        let autocomplete = mutation.addedNodes[i].type.toLowerCase();
+        if (keywords.includes(type) || keywords.includes(autocomplete)) {
+          console.log("TRUE");
+        }
+      }
+    }
+  });
+});
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true,
+});
