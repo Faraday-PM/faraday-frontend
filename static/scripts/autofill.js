@@ -25,6 +25,7 @@ const observer = new MutationObserver(function (mutations) {
       if (mutation.addedNodes[i].nodeName == "INPUT") {
         let type = mutation.addedNodes[i].type.toLowerCase();
         let autocomplete = mutation.addedNodes[i].type.toLowerCase();
+        console.log(mutation.addedNodes[i].type);
         if (keywords.includes(type) || keywords.includes(autocomplete)) {
           console.log("TRUE");
         }
@@ -37,3 +38,5 @@ observer.observe(document.body, {
   childList: true,
   subtree: true,
 });
+
+console.log("HI");

@@ -1,7 +1,7 @@
 {
   "name": "Faraday",
   "description": "Open source and self hosted password manager",
-  "version": "1.0",
+  "version": "1.1",
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",
@@ -11,12 +11,5 @@
     "16": "logo192.png",
     "48": "logo192.png",
     "128": "logo192.png"
-  },
-  "permissions": ["tabs", "scripting", "webNavigation"],
-  "content_scripts": [
-    {
-      "js": ["scripts/autofill.js"],
-      "matches": ["*://*/*"]
-    }
-  ]
+  }
 }
