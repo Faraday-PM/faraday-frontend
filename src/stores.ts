@@ -9,11 +9,21 @@ import { writable } from "svelte/store";
 
 export const route = persist(writable(""), createLocalStorage(), "route");
 
-export const vault: any = persist(
+export const vault = persist(
   writable({ vault: [] }),
-  createChromeStorage(),
+  createLocalStorage(),
   "vault"
 );
+
+export const chrome_vault = persist(
+  writable({ vault: [] }),
+  createChromeStorage(),
+  "fvault" //faraday vault
+);
+
+vault.subscribe((value) => {
+  chrome_vault.set(value);
+});
 
 /* 
 vault = {
@@ -59,13 +69,13 @@ export const credentials = persist(
     password: "",
     vaultkey: "", // base64 encoded
   }),
-  createChromeStorage(),
+  createLocalStorage(),
   "credentials"
 );
 
 export const serverIP = persist(
   writable("http://192.168.2.198:8000"),
-  createChromeStorage(),
+  createLocalStorage(),
   "serverIP"
 );
 
@@ -76,5 +86,3 @@ export const onboarded = persist(
   createLocalStorage(),
   "onboarded"
 );
-
-export const test = persist(writable(false), createChromeStorage(), "test");
