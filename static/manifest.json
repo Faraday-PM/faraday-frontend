@@ -12,11 +12,9 @@
     "48": "logo192.png",
     "128": "logo192.png"
   },
-  "permissions": [],
-  "content_scripts": [
-    {
-      "js": ["scripts/autofill.js"],
-      "matches": ["*://*/*"]
-    }
-  ]
+  "host_permissions": ["https://*/*", "http://*/*"],
+  "permissions": ["webNavigation", "scripting"],
+  "background": {
+    "service_worker": "scripts/autofill.js"
+  }
 }

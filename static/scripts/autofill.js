@@ -43,4 +43,32 @@ console.log("HI");
 
 */
 
-document.arrive();
+chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
+  if (frameId !== 0) return;
+
+  chrome.scripting.executeScript({
+    target: { tabId },
+    function: pageLoad,
+  });
+});
+
+function containsLogin() {
+  const cl = false;
+
+  const keywords = ["password", "email", "username"];
+
+  let inputs = document.getElementsByTagName("input");
+  for (var i = 0; i < inputs.length; i++) {
+    let type = inputs[i].type.toLowerCase();
+    let autocomplete = inputs[i].autocomplete.toLowerCase();
+    if (keywords.includes(type) || keywords.includes(autocomplete)) {
+      return true;
+    }
+  }
+
+  return cl;
+}
+
+function pageLoad() {
+  const hasLogin = containsLogin();
+}
