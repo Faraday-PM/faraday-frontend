@@ -1,8 +1,10 @@
 import {
+  CHROME_STORAGE_TYPE,
   persist,
   createLocalStorage,
   createChromeStorage,
 } from "@macfja/svelte-persistent-store";
+import { onMount } from "svelte";
 import { writable } from "svelte/store";
 
 export const route = persist(writable(""), createLocalStorage(), "route");
@@ -71,6 +73,8 @@ export const mount = writable(false);
 
 export const onboarded = persist(
   writable(false),
-  createChromeStorage(),
+  createLocalStorage(),
   "onboarded"
 );
+
+export const test = persist(writable(false), createChromeStorage(), "test");

@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import SearchBar from "../../components/SearchBar.svelte";
   import ListItem from "../../components/ListItem.svelte";
-  import { vault } from "../../stores";
+  import { vault, test } from "../../stores";
   import { updateVault } from "../../utility/vaultHandler";
 
   onMount(() => {
@@ -21,6 +21,8 @@
           {/each}
         {/if}
       </ul>
+      <a href="test/chromestorage">Chrome</a>
+      {$test}
     </main>
   </div>
 </div>

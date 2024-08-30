@@ -34,12 +34,11 @@
   },
   "type": "module",
   "dependencies": {
-    "@macfja/svelte-persistent-store": "^2.3.1",
+    "@macfja/svelte-persistent-store": "^2.4.1",
     "@stablelib/aes": "^2.0.0",
     "@sveu/browser": "^0.20.0",
     "@types/bytebuffer": "^5.0.44",
     "@types/dom-view-transitions": "^1.0.5",
-    "arrive": "^2.4.1",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "bytebuffer": "^5.0.1",

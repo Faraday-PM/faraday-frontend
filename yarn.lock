@@ -217,10 +217,10 @@
   resolved "https://registry.npmjs.org/@macfja/serializer/-/serializer-1.1.2.tgz"
   integrity sha512-kqEg3Zu5/g3ivdeb+jP4rBVVdmtKXVsRwH+x9KdM2Y7d2mKLq54g+YLSgTQ4KwJvWmyHFvRq0ouX5Dr4H1Hw3Q==
 
-"@macfja/svelte-persistent-store@^2.3.1":
-  version "2.4.0"
-  resolved "https://registry.npmjs.org/@macfja/svelte-persistent-store/-/svelte-persistent-store-2.4.0.tgz"
-  integrity sha512-01aumH+i4iIrr8GyGtRvKlgz58llvUpys3CTva1Hf4RR5/PmshRUSkl8q3vyT4beCf4lxDHnFxEq//QJyJFVbw==
+"@macfja/svelte-persistent-store@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.npmjs.org/@macfja/svelte-persistent-store/-/svelte-persistent-store-2.4.1.tgz"
+  integrity sha512-VlGtRCJcASmFeVRXm4rbncoM+llnbeJ8C0bzimhARCGi6zKxGncRFLeUVwtjcDW5uNfiJJUK8mzEhXBxeP8fbg==
   dependencies:
     "@macfja/serializer" "^1.1.2"
     browser-cookies "^1.2.0"
@@ -819,11 +819,6 @@ array-union@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/array-union/-/array-union-2.1.0.tgz"
   integrity sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==
-
-arrive@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.npmjs.org/arrive/-/arrive-2.4.1.tgz"
-  integrity sha512-gnpcKdKN4HJAmzpZIxDBJsw/z59sBvh9i4mJyHJCk+enrKnEZ/l1GspM1MGPxMxnRcdt+v/OIWEY5mNQSGisPQ==
 
 autoprefixer@^10.4.14:
   version "10.4.15"

@@ -63,6 +63,8 @@ chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
   chrome.storage.local.get(null, function (items) {
     console.log(JSON.stringify(items));
   });
+
+  chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
 });
 
 function containsLogin() {
@@ -84,8 +86,10 @@ function containsLogin() {
 
 async function pageLoad() {
   //const hasLogin = containsLogin();
-  let v = await chrome.storage.sync.get("vault");
-  console.log(v);
+  chrome.storage.local.get(null, function (items) {
+    console.log(items);
+  });
+  console.log("HI");
   //console.log(
   //  "VAULT:" + JSON.stringify(await chrome.storage.sync.get(["vault"]))
   //);
