@@ -1,11 +1,15 @@
-import { persist, createLocalStorage } from "@macfja/svelte-persistent-store";
+import {
+  persist,
+  createLocalStorage,
+  createChromeStorage,
+} from "@macfja/svelte-persistent-store";
 import { writable } from "svelte/store";
 
 export const route = persist(writable(""), createLocalStorage(), "route");
 
 export const vault: any = persist(
   writable({ vault: [] }),
-  createLocalStorage(),
+  createChromeStorage(),
   "vault"
 );
 
@@ -53,13 +57,13 @@ export const credentials = persist(
     password: "",
     vaultkey: "", // base64 encoded
   }),
-  createLocalStorage(),
+  createChromeStorage(),
   "credentials"
 );
 
 export const serverIP = persist(
   writable("http://192.168.2.198:8000"),
-  createLocalStorage(),
+  createChromeStorage(),
   "serverIP"
 );
 
@@ -67,6 +71,6 @@ export const mount = writable(false);
 
 export const onboarded = persist(
   writable(false),
-  createLocalStorage(),
+  createChromeStorage(),
   "onboarded"
 );

@@ -42,13 +42,26 @@ observer.observe(document.body, {
 console.log("HI");
 
 */
-
 chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
   if (frameId !== 0) return;
 
+  /*const v = chrome.storage.local.get(["vault"], () => {
+    chrome.storage.sync.set({ vault: v }, () => {
+      chrome.scripting.executeScript({
+        target: { tabId },
+        function: pageLoad,
+      });
+    });
+  });
+  */
+  //console.log(v);
+  /*chrome.storage.sync.set({ vault: v });
   chrome.scripting.executeScript({
     target: { tabId },
     function: pageLoad,
+  }); */
+  chrome.storage.local.get(null, function (items) {
+    console.log(JSON.stringify(items));
   });
 });
 
@@ -69,6 +82,11 @@ function containsLogin() {
   return cl;
 }
 
-function pageLoad() {
-  const hasLogin = containsLogin();
+async function pageLoad() {
+  //const hasLogin = containsLogin();
+  let v = await chrome.storage.sync.get("vault");
+  console.log(v);
+  //console.log(
+  //  "VAULT:" + JSON.stringify(await chrome.storage.sync.get(["vault"]))
+  //);
 }
