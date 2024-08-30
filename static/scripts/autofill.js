@@ -1,4 +1,4 @@
-function containsLogin() {
+/*function containsLogin() {
   const cl = false;
 
   const keywords = ["password", "email", "username"];
@@ -40,3 +40,7 @@ observer.observe(document.body, {
 });
 
 console.log("HI");
+
+*/
+
+document.arrive();
