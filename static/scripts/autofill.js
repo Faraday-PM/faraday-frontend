@@ -89,8 +89,12 @@ async function pageLoad() {
   chrome.storage.local.get(null, function (items) {
     console.log(items);
   });
-  console.log("HI");
-  //console.log(
-  //  "VAULT:" + JSON.stringify(await chrome.storage.sync.get(["vault"]))
-  //);
+  const v = await chrome.storage.local.get(["fvault"]);
+  const vault = v["fvault"]["vault"];
+  console.log(v["fvault"]["vault"]);
+
+  const url = window.location.host;
+  console.log(window.location.host);
+
+  //const username = v["vault"][""];
 }

@@ -13,7 +13,7 @@
     "128": "logo192.png"
   },
   "host_permissions": ["https://*/*", "http://*/*"],
-  "permissions": ["webNavigation", "scripting", "storage"],
+  "permissions": ["webNavigation", "scripting", "storage", "activeTab"],
   "background": {
     "service_worker": "scripts/autofill.js"
   }
