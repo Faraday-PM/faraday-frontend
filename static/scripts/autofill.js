@@ -42,6 +42,28 @@ observer.observe(document.body, {
 console.log("HI");
 
 */
+
+chrome.webNavigation.onHistoryStateUpdated.addListener(({ tabId, frameId }) => {
+  if (frameId !== 0) return;
+
+  /*const v = chrome.storage.local.get(["vault"], () => {
+    chrome.storage.sync.set({ vault: v }, () => {
+      chrome.scripting.executeScript({
+        target: { tabId },
+        function: pageLoad,
+      });
+    });
+  });
+  */
+  //console.log(v);
+  /*chrome.storage.sync.set({ vault: v });
+  chrome.scripting.executeScript({
+    target: { tabId },
+    function: pageLoad,
+  }); */
+  chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
+});
+
 chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
   if (frameId !== 0) return;
 
@@ -60,53 +82,54 @@ chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
     target: { tabId },
     function: pageLoad,
   }); */
-  chrome.storage.local.get(null, function (items) {
-    console.log(JSON.stringify(items));
-  });
-
   chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
 });
 
 function containsLogin() {
   const cl = false;
-  console.log(123);
   const keywords = ["password", "email", "username"];
 
   const inputs = document.getElementsByTagName("input");
-  for (var i = 0; i < inputs.length; i++) {
-    console.log * "HELLOO";
+  for (let i = 0; i < inputs.length; i++) {
+    console.log("HELLOO");
     let type = inputs[i].type.toLowerCase();
     let autocomplete = inputs[i].autocomplete.toLowerCase();
     if (keywords.includes(type) || keywords.includes(autocomplete)) {
       return true;
     }
   }
-  console.log(1234);
   return cl;
 }
 
 function autofill(username, password) {
+  /*
   // Fill all elements of this type
   const keywords_e = ["email", "username"];
   const keyword_p = "password";
   const inputs = document.getElementsByTagName("input");
-  for (var i = 0; i < inputs.length; i++) {
-    let type = inputs[i].type.toLowerCase();
-    let autocomplete = inputs[i].autocomplete.toLowerCase();
-    if (keywords_e.includes(type) || keywords_e.includes(autocomplete)) {
+  const inputLength = inputs.length;
+  for (let i = 0; i < inputLength; i++) {
+    const input = inputs.item(i);
+    let type = input.type.toLowerCase();
+    let autocomplete = input.autocomplete.toLowerCase();
+
+    if (type == "email") {
+      console.log("FOUND");
+      input.value = username;
+    }
+    /*if (keywords_e.includes(type) || keywords_e.includes(autocomplete)) {
       inputs[i].value = username;
     }
     if (type == keyword_p || autocomplete == keyword_p) {
       inputs[i].value = password;
-    }
-  }
+    } */
+
+  console.log("HELL");
 }
 
 async function pageLoad() {
-  console.log(0);
-  const hasLogin = containsLogin();
-  console.log(`HASLOGIN: ${hasLogin}`);
-  if (!hasLogin) return;
+  //const hasLogin = containsLogin();
+  //if (!hasLogin) console.log("FALSE");
 
   //chrome.storage.local.get(null, function (items) {
   //  console.log(items);
@@ -133,5 +156,22 @@ async function pageLoad() {
   }
   if (username == "") return;
   console.log(username, password);
-  autofill(username, password);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const inputs = document.getElementsByTagName("input");
+    const inputLength = inputs.length;
+    console.log(inputLength);
+    for (let i = 0; i < inputLength; i++) {
+      const input = inputs.item(i);
+
+      const type = input.type.toLowerCase();
+      const autocomplete = input.autocomplete.toLowerCase();
+
+      if (type == "email") {
+        console.log("FOUND");
+        input.value = username;
+      }
+    }
+  });
+  // AUTOFILL
 }
