@@ -1,11 +1,9 @@
 /*global chrome*/
 import {
-  CHROME_STORAGE_TYPE,
   persist,
   createLocalStorage,
   createChromeStorage,
 } from "@macfja/svelte-persistent-store";
-import { onMount } from "svelte";
 import { writable } from "svelte/store";
 
 export const route = persist(writable(""), createLocalStorage(), "route");
@@ -17,17 +15,50 @@ export const vault = persist(
 );
 
 // TODO: Update vault to store email and password????
+// TODO: UPDATE vault setup to allow for better searching
+/*
+vault = {
+  url: {
+    username: 123
+    password: 456
+    }
+}
+*/
+// Then I can just do vault[url] instead of stupid for loop
 export const chrome_vault = persist(
   writable({ vault: [] }),
   createChromeStorage(),
   "fvault" //faraday vault
 );
 
-vault.subscribe((value) => {
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-    console.log(tabs);
-  });
-  chrome_vault.set(value);
+async function getTab() {
+  let queryOptions = { active: true, lastFocusedWindow: true };
+  // `tab` will either be a `tabs.Tab` instance or `undefined`.
+  let [tab] = await chrome.tabs.query(queryOptions);
+
+  if (tab.url) {
+    const regex = /^(https?:\/\/[^/?#]+)/;
+    const matches = regex.exec(tab.url);
+
+    if (matches && matches.length > 1) {
+      const domainName = matches[1];
+      return domainName;
+    } else {
+      throw new Error("Could not match find url");
+    }
+  }
+}
+
+vault.subscribe(async (value: any) => {
+  if (typeof window !== "undefined") {
+    const url = await getTab();
+    for (let i = 0; i < value.length; i++) {
+      if (value[i].url == url) {
+        chrome_vault.set(value[i]);
+        return;
+      }
+    }
+  }
 });
 
 /* 
