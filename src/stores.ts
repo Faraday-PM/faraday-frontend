@@ -15,6 +15,7 @@ export const vault = persist(
   "vault"
 );
 
+// TODO: Update vault to store email and password????
 export const chrome_vault = persist(
   writable({ vault: [] }),
   createChromeStorage(),
