@@ -43,25 +43,10 @@ console.log("HI");
 
 */
 
-chrome.webNavigation.onHistoryStateUpdated.addListener(({ tabId, frameId }) => {
-  if (frameId !== 0) return;
-
-  /*const v = chrome.storage.local.get(["vault"], () => {
-    chrome.storage.sync.set({ vault: v }, () => {
-      chrome.scripting.executeScript({
-        target: { tabId },
-        function: pageLoad,
-      });
-    });
-  });
-  */
-  //console.log(v);
-  /*chrome.storage.sync.set({ vault: v });
-  chrome.scripting.executeScript({
-    target: { tabId },
-    function: pageLoad,
-  }); */
-  chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  if (changeInfo.status == "complete") {
+    //chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
+  }
 });
 
 chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
@@ -136,15 +121,12 @@ async function pageLoad() {
   //});
   const v = await chrome.storage.local.get(["fvault"]);
   const vault = v["fvault"]["vault"];
-  //console.log(v["fvault"]["vault"]);
 
   const url = window.location.host;
-  //console.log(window.location.host);
-  console.log(1);
+
   let username = "";
   let password = "";
   for (i = 0; i < vault.length; i++) {
-    console.log(vault[i]);
     if (
       vault[i]["url"] == `https://${url}` ||
       vault[i]["url"] == `http://${url}`
@@ -154,24 +136,22 @@ async function pageLoad() {
       break;
     }
   }
+
   if (username == "") return;
-  console.log(username, password);
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const inputs = document.getElementsByTagName("input");
-    const inputLength = inputs.length;
-    console.log(inputLength);
-    for (let i = 0; i < inputLength; i++) {
-      const input = inputs.item(i);
+  const inputs = document.getElementsByTagName("input");
+  const inputLength = inputs.length;
+  for (let i = 0; i < inputLength; i++) {
+    const input = inputs.item(i);
 
-      const type = input.type.toLowerCase();
-      const autocomplete = input.autocomplete.toLowerCase();
-
-      if (type == "email") {
-        console.log("FOUND");
-        input.value = username;
-      }
+    const type = input.type.toLowerCase();
+    const autocomplete = input.autocomplete.toLowerCase();
+    if (type == "email" || type == "username") {
+      input.value = username;
     }
-  });
+    if (type == "password") {
+      input.value = password;
+    }
+  }
   // AUTOFILL
 }

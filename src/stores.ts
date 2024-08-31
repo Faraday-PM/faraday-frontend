@@ -1,3 +1,4 @@
+/*global chrome*/
 import {
   CHROME_STORAGE_TYPE,
   persist,
@@ -23,6 +24,9 @@ export const chrome_vault = persist(
 );
 
 vault.subscribe((value) => {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+    console.log(tabs);
+  });
   chrome_vault.set(value);
 });
 
