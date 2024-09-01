@@ -17,6 +17,8 @@ module.exports = {
     es2017: true,
     node: true,
     webextensions: true,
+  },
+  globals: {
     chrome: true,
   },
   overrides: [

@@ -39,7 +39,9 @@
       const domainName = await getCurrentTab();
       capsule.url = domainName;
       getfavicon(domainName);
-    } catch {}
+    } catch {
+      return;
+    }
   }
 
   let capsule = {

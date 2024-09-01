@@ -2,8 +2,7 @@
   import { credentials, serverIP } from "./../../../../stores";
 
   let ip = $serverIP;
-  let username = $credentials.username;
-  let password = "";
+
   // I love svelte reactivity
   $: {
     serverIP.set(ip);

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { route } from "../stores";
   const routes = ["/", "/generator", "/account"];
-  let selected: number = 0;
+  let selected = 0;
 
   $: {
     route.set(routes[selected]);
