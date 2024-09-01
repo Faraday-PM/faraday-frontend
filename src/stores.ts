@@ -5,6 +5,7 @@ import {
   createChromeStorage,
 } from "@macfja/svelte-persistent-store";
 import { writable } from "svelte/store";
+import { onMount } from "svelte";
 
 export const route = persist(writable(""), createLocalStorage(), "route");
 
@@ -50,7 +51,7 @@ async function getTab() {
 }
 
 vault.subscribe(async (value: any) => {
-  if (typeof window !== "undefined") {
+  /* if (typeof window !== "undefined") {
     const url = await getTab();
     for (let i = 0; i < value.length; i++) {
       if (value[i].url == url) {
@@ -58,8 +59,16 @@ vault.subscribe(async (value: any) => {
         return;
       }
     }
-  }
+  }*/
 });
+
+onMount(() => {
+  chrome.runtime.onMessage.addListener(messageReceived);
+});
+
+function messageReceived(msg: any) {
+  console.log(msg);
+}
 
 /* 
 vault = {

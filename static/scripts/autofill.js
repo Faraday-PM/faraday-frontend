@@ -67,6 +67,7 @@ chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
     target: { tabId },
     function: pageLoad,
   }); */
+  chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {});
   chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
 });
 
