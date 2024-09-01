@@ -60,11 +60,12 @@ vault.subscribe(async (value: any) => {
       }
     }
   }*/
+  chrome_vault.set(value);
 });
 
-onMount(() => {
-  chrome.runtime.onMessage.addListener(messageReceived);
-});
+//onMount(() => {
+//  chrome.runtime.onMessage.addListener(messageReceived);
+//});
 
 function messageReceived(msg: any) {
   console.log(msg);
