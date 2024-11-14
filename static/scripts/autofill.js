@@ -1,14 +1,16 @@
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-  if (changeInfo.status == "complete") {
-    //chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
-  }
-});
+//chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+//  if (changeInfo.status == "complete") {
+//chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
+//  }
+//});
 
 chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
   if (frameId !== 0) return;
 
   chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
 });
+
+let fillable = false;
 
 function containsLogin() {
   const cl = false;
@@ -29,7 +31,7 @@ function containsLogin() {
 async function pageLoad() {
   //const hasLogin = containsLogin();
   //if (!hasLogin) console.log("FALSE");
-
+  console.log("USERNAME");
   const v = await chrome.storage.local.get(["fvault"]);
   const vault = v["fvault"]["vault"];
 
@@ -47,9 +49,9 @@ async function pageLoad() {
       break;
     }
   }
-
+  console.log(`${username}, ${JSON.stringify(vault)}`);
   if (username == "") return;
-
+  fillable = true;
   //AutoFILL
   const inputs = document.getElementsByTagName("input");
   const inputLength = inputs.length;
