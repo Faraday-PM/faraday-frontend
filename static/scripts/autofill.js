@@ -8,7 +8,23 @@ chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
   if (frameId !== 0) return;
 
   chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
+  chrome.scripting.executeScript({
+    target: { tabId },
+    function: NodeListener,
+  });
 });
+
+async function NodeListener() {
+  const observer = new MutationObserver((mutations) => {
+    for (let mutation of mutations) {
+      for (let addedNode of mutation.addedNodes) {
+        console.log(addedNode.id);
+      }
+    }
+  });
+
+  observer.observe(document, { childList: true, subtree: true });
+}
 
 let fillable = false;
 
