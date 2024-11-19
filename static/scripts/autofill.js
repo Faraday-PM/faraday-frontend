@@ -16,10 +16,8 @@ chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
 
 async function NodeListener() {
   const observer = new MutationObserver((mutations) => {
-    for (let mutation of mutations) {
-      for (let addedNode of mutation.addedNodes) {
-        console.log(addedNode.id);
-      }
+    if (containsLogin()) {
+      autoFill()
     }
   });
 
@@ -44,10 +42,7 @@ function containsLogin() {
   return cl;
 }
 
-async function pageLoad() {
-  //const hasLogin = containsLogin();
-  //if (!hasLogin) console.log("FALSE");
-  console.log("USERNAME");
+async function getCredentials() {
   const v = await chrome.storage.local.get(["fvault"]);
   const vault = v["fvault"]["vault"];
 
@@ -65,9 +60,17 @@ async function pageLoad() {
       break;
     }
   }
-  console.log(`${username}, ${JSON.stringify(vault)}`);
   if (username == "") return;
   fillable = true;
+
+  return username, password
+}
+
+async function pageLoad() {
+  // what happens if its not founde
+  (username, password) = await getCredentials()
+
+
   //AutoFILL
   const inputs = document.getElementsByTagName("input");
   const inputLength = inputs.length;
@@ -84,3 +87,5 @@ async function pageLoad() {
     }
   }
 }
+
+function autoFill() {}
