@@ -42,6 +42,7 @@ function containsLogin() {
   return cl;
 }
 
+
 async function getCredentials() {
   const v = await chrome.storage.local.get(["fvault"]);
   const vault = v["fvault"]["vault"];
@@ -60,9 +61,8 @@ async function getCredentials() {
       break;
     }
   }
-  if (username == "") return;
+  if (username == "") throw ;
   fillable = true;
-
   return username, password
 }
 
@@ -70,6 +70,7 @@ async function pageLoad() {
   // what happens if its not founde
   (username, password) = await getCredentials()
 
+  autoFill(username, password)
 
   //AutoFILL
   const inputs = document.getElementsByTagName("input");
@@ -88,4 +89,4 @@ async function pageLoad() {
   }
 }
 
-function autoFill() {}
+function autoFill(username, password) {}
