@@ -61,32 +61,37 @@ async function getCredentials() {
       break;
     }
   }
-  if (username == "") throw ;
+  if (username == "") throw new Error("No Username Found!"); // Pretty sure any error in the program should mean no go 
   fillable = true;
   return username, password
 }
 
 async function pageLoad() {
   // what happens if its not founde
+  try {
+    (username, password) = await getCredentials();
+  } catch (e) {
+    return;
+  }
   (username, password) = await getCredentials()
 
   autoFill(username, password)
+  }
+}
 
-  //AutoFILL
+function autoFill(username, password) {
   const inputs = document.getElementsByTagName("input");
   const inputLength = inputs.length;
   for (let i = 0; i < inputLength; i++) {
     const input = inputs.item(i);
 
     const type = input.type.toLowerCase();
-    const autocomplete = input.autocomplete.toLowerCase();
+    // Purpose?
+    // const autocomplete = input.autocomplete.toLowerCase();
     if (type == "email" || type == "username") {
       input.value = username;
     }
     if (type == "password") {
       input.value = password;
     }
-  }
-}
-
-function autoFill(username, password) {}
+  }}
