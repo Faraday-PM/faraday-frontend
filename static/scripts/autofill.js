@@ -15,9 +15,15 @@ chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
 });
 
 async function NodeListener() {
-  const observer = new MutationObserver((mutations) => {
-    if (containsLogin()) {
-      autoFill()
+  const observer = new MutationObserver(async (mutations) => {
+    try {
+      if (containsLogin()) {
+        await pageLoad();
+      }
+    } catch (e) {
+      if (e.message !== "No Username Found!") {
+        throw e;
+      }
     }
   });
 
@@ -42,7 +48,6 @@ function containsLogin() {
   return cl;
 }
 
-
 async function getCredentials() {
   const v = await chrome.storage.local.get(["fvault"]);
   const vault = v["fvault"]["vault"];
@@ -61,21 +66,18 @@ async function getCredentials() {
       break;
     }
   }
-  if (username == "") throw new Error("No Username Found!"); // Pretty sure any error in the program should mean no go 
+
+  if (username == "") throw new Error("No Username Found!"); // Pretty sure any error in the program should mean no go
   fillable = true;
-  return username, password
+  return username, password;
 }
 
 async function pageLoad() {
-  // what happens if its not founde
   try {
-    (username, password) = await getCredentials();
+    const [username, password] = await getCredentials();
+    autoFill(username, password);
   } catch (e) {
     return;
-  }
-  (username, password) = await getCredentials()
-
-  autoFill(username, password)
   }
 }
 
@@ -94,4 +96,5 @@ function autoFill(username, password) {
     if (type == "password") {
       input.value = password;
     }
-  }}
+  }
+}
