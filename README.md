@@ -32,3 +32,8 @@ Type `chrome://extensions` in your URL bar. From there click on load unpacked as
 Select the folder you built the code into.
 
 Voila! Now you've loaded the extension. Go through onboarding and enjoy Faraday!
+
+## Count Lines of Code 
+``bash
+wc -l src/**/*.{svelte,ts,html,json,css}
+``
