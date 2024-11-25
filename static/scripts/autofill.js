@@ -4,36 +4,9 @@
 //  }
 //});
 
-chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
-  if (frameId !== 0) return;
-
-  chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
-  chrome.scripting.executeScript({
-    target: { tabId },
-    function: NodeListener,
-  });
-});
-
-async function NodeListener() {
-  const observer = new MutationObserver(async (mutations) => {
-    try {
-      if (containsLogin()) {
-        await pageLoad();
-      }
-    } catch (e) {
-      if (e.message !== "No Username Found!") {
-        throw e;
-      }
-    }
-  });
-
-  observer.observe(document, { childList: true, subtree: true });
-}
-
 let fillable = false;
 
 function containsLogin() {
-  const cl = false;
   const keywords = ["password", "email", "username"];
 
   const inputs = document.getElementsByTagName("input");
@@ -45,7 +18,27 @@ function containsLogin() {
       return true;
     }
   }
-  return cl;
+  return false;
+}
+
+async function NodeListener() {
+  const observer = new MutationObserver(async (mutations) => {
+    try {
+      if (containsLogin()) {
+        await pageLoad();
+      }
+    } catch (e) {
+      console.log(e.message);
+      if (
+        e.message !== "No Username Found!" &&
+        e.message !== "containsLogin is not defined"
+      ) {
+        throw e;
+      }
+    }
+  });
+
+  observer.observe(document, { childList: true, subtree: true });
 }
 
 async function getCredentials() {
@@ -73,11 +66,15 @@ async function getCredentials() {
 }
 
 async function pageLoad() {
+  // JS errors suck
+  console.log("Running");
   try {
     const [username, password] = await getCredentials();
+    console.log(username);
     autoFill(username, password);
   } catch (e) {
-    return;
+    console.log(e.message);
+    throw e;
   }
 }
 
@@ -98,3 +95,13 @@ function autoFill(username, password) {
     }
   }
 }
+
+chrome.webNavigation.onCompleted.addListener(({ tabId, frameId }) => {
+  if (frameId !== 0) return;
+
+  chrome.scripting.executeScript({ target: { tabId }, function: pageLoad });
+  chrome.scripting.executeScript({
+    target: { tabId },
+    function: NodeListener,
+  });
+});
